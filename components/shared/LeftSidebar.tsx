@@ -27,7 +27,7 @@ const LeftSidebar = () => {
             <Link
               href={link.route}
               key={link.label}
-              className={`leftsidebar_link ${isActive && "bg-primary-500 "}`}
+              className={`leftsidebar_link ${isActive && "bg-gradient-to-r from-gray-400 via-gray-600 to-blue-900 "}`}
             >
               <Image
                 src={link.imgURL}
