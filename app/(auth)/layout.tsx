@@ -1,9 +1,32 @@
-const Layout = ({ children } : { children: React.ReactNode }) => {
-    return (
-        <div className="flex-center min-h-screen w-full bg-black bg-dotted-pattern bg-cover bg-fixed bg-center">
-            {children}
-        </div>
-    )
-}
+import React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
-export default Layout
+import "../globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+    title: 'UrbaneX',
+    description: 'Connect Collab & Catalyse Positive Change',
+  };
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang='en'>
+        <body className={`${inter.className} bg-dark-1`}>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
+}
