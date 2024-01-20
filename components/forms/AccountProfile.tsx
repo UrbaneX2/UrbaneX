@@ -17,6 +17,8 @@ import {
   import { Input } from "@/components/ui/input"
   import { Textarea } from "@/components/ui/textarea"
   import * as z from "zod"
+import { isBase64Image } from '@/lib/utils';
+import { useUploadThing } from '@/lib/uploadthing';
 
 
 
@@ -36,6 +38,7 @@ interface Props {
 const AccountProfile = ({user, btnTitle}: Props) => {
 
   const [files, setFiles] = useState<File[]>([]);
+  const {startUpload} = useUploadThing("media");
 
     const form = useForm({
         resolver: zodResolver(userValidation),
@@ -71,11 +74,33 @@ const AccountProfile = ({user, btnTitle}: Props) => {
       }
     };
 
-    function onSubmit(values: z.infer<typeof userValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
-      }
+    const onSubmit = async (values: z.infer<typeof userValidation>) => {
+      const blob = values.profile_photo;
+   
+       const hasImageChanged = isBase64Image(blob);
+       if (hasImageChanged) {
+         const imgRes = await startUpload(files);
+   
+       if (imgRes && imgRes[0].url) {
+           values.profile_photo = imgRes[0].url;
+         }
+       }
+   
+       await updateUser({
+         name: values.name,
+         path: pathname,
+         username: values.username,
+         userId: user.id,
+         bio: values.bio,
+         image: values.profile_photo,
+       });
+   
+       if (pathname === "/profile/edit") {
+         router.back();
+       } else {
+         router.push("/");
+       }
+     };
       
     return (
         <Form {...form}>
