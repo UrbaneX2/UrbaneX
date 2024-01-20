@@ -9,6 +9,6 @@ export const userValidation = z.object({
         .min(3).max(50),
     username: z.string({
         required_error:"Username is required"
-    }).min(3).max(10),
+    }).min(3).max(20),
     bio: z.string().max(500),
 });
