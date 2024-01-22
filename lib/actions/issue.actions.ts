@@ -75,3 +75,41 @@ export async function fetchPosts(pageNumber = 1, pageSize = 15) {
 
       return {  posts, isNext };
     }
+
+
+export async function fetchIssueById(id: string) {
+    connectToDB();
+
+    try {
+        const issue = await Issue.findById(id).
+        populate({
+            path: "author",
+            model: User,
+            select: "_id id name image",
+    }).populate({
+        path: "children", 
+        populate: [
+          {
+            path: "author", 
+            model: User,
+            select: "_id id name parentId image", 
+          },
+          {
+            path: "children", 
+            model: Issue, 
+            populate: {
+              path: "author", 
+              model: User,
+              select: "_id id name parentId image",
+            },
+          },
+        ],
+      })
+      .exec();
+
+    return issue;
+  } catch (err) {
+    console.error("Error while fetching issue:", err);
+    throw new Error("Unable to fetch issue");
+  }
+}

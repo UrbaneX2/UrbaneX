@@ -72,7 +72,7 @@ const IssueCard = ({
                   height={24}
                   className='cursor-pointer object-contain'
                 />
-                <Link href={`/thread/${id}`}>
+                <Link href={`/issue/${id}`}>
                   <Image
                     src='/assets/reply.svg'
                     alt='reply'
@@ -96,8 +96,16 @@ const IssueCard = ({
                   className='cursor-pointer object-contain'
                 />
               </div>
+
+              {isComment && comments.length > 0 && (
+                <Link href={`/issue/${id}`}>
+                  <p className='mt-1 text-subtle-medium text-gray-1'>
+                    {comments.length} repl{comments.length > 1 ? "ies" : "y"}
+                  </p>
+                </Link>
+              )}
             </div>
-            </div>
+          </div>
         </div>
     </article>
    
