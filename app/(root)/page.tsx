@@ -3,7 +3,7 @@ import { UserButton } from '@clerk/nextjs'
 import { fetchPosts } from '@/lib/actions/issue.actions';
 import { currentUser } from '@clerk/nextjs';
 import IssueCard from '@/components/cards/IssueCard';
-
+import Comment from '@/components/forms/Comment';
 
 export default async function Home() {
 
@@ -30,7 +30,7 @@ export default async function Home() {
           author = {post.author}
           community = {post.community}
           createdAt={post.createdAt}
-          comments={post.comments}          
+          comments={post.children}          
           />
             ))}
           </>
