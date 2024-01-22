@@ -108,8 +108,39 @@ export async function fetchIssueById(id: string) {
       .exec();
 
     return issue;
-  } catch (err) {
-    console.error("Error while fetching issue:", err);
-    throw new Error("Unable to fetch issue");
+  } catch (err: any) {
+    throw new Error(`"Unable to fetch issue": ${err.message}`);
   }
+}
+
+export async function addCommentToIssue(
+    issueId: string,
+    commentText: string,
+    userId: string,
+    path: string,
+) {
+    connectToDB();
+
+    try {
+
+        const originalIssue = await Issue.findById(issueId);
+        if(!originalIssue) throw new Error("Issue not found");
+
+        const commentIssue = new Issue({
+            text: commentText,
+            author: userId,
+            parentId: issueId,
+        });
+
+        const savedCommentIssue = await commentIssue.save();
+
+        originalIssue.children.push(savedCommentIssue._id);
+
+        await originalIssue.save();
+
+        revalidatePath(path);
+
+    } catch (error: any) {
+        throw new Error(`Error adding comment to issue: ${error.message}`);
+    }
 }

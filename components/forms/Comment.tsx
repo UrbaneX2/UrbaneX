@@ -17,7 +17,8 @@ import * as z from "zod"
 import { useRouter, usePathname } from 'next/navigation';
 import  { updateUser }  from '@/lib/actions/user.actions';
 import { CommentValidation } from '@/lib/validations/issue';
-// import { createIssue } from '@/lib/actions/issue.actions';
+import Image from 'next/image';
+import { addCommentToIssue } from '@/lib/actions/issue.actions';
 
 interface Props {
     issueId: string;
@@ -37,50 +38,46 @@ const Comment = ({issueId, currentUserImg, currentUserId}: Props) => {
     });
 
     const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    //    await createIssue(
-    //     {
-    //         text: values.issue,
-    //         author: userId,
-    //         communityId: null,
-    //         path: pathname,
-    //     });
+       await addCommentToIssue(issueId, values.issue, JSON.parse(currentUserId), pathname);
 
-        router.push('/');
+       form.reset();
+    }
+
     return (
         <Form {...form}>
-          <form 
-          onSubmit={form.handleSubmit(onSubmit)} 
-          className="mt-10 flex flex-col justify-start gap-10">
-
-           <FormField
+      <form className='comment-form' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
           control={form.control}
           name='issue'
           render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='text-base-semibold text-light-2'>
-                comment
+            <FormItem className='flex w-full items-center gap-3'>
+              <FormLabel>
+                <Image
+                  src={currentUserImg}
+                  alt='current_user'
+                  width={48}
+                  height={48}
+                  className='rounded-full object-cover'
+                />
               </FormLabel>
-              <FormControl className='no-focus border border-dark-4 bg-gradient-to-r from-gray-800 via-gray-600 to-black text-light-1'>
+              <FormControl className='border-none bg-transparent'>
                 <Input
-                 type="text"
-                 placeholder='Comment...'
-                 className='no-focus text-light-1 outline-none'
+                  type='text'
                   {...field}
+                  placeholder='Comment...'
+                  className='no-focus text-light-1 outline-none'
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
-        /> 
-        <Button
-        type='submit'
-        className='bg-gradient-to-r from-gray-200 via-gray-400 to-black'
-        >
-            Post Comment
+        />
+
+        <Button type='submit' className='comment-form_btn'>
+          Reply
         </Button>
-            </form>
-            /</Form>
-    )
-};
-};
+      </form>
+    </Form>
+  );
+}
 export default Comment;
+
