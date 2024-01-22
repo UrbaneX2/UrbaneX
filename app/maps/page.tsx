@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   );
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.API_KEY as string,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_API_KEY as string,
     libraries: libraries as any,
   });
 
