@@ -32,7 +32,6 @@
     @apply rounded-lg bg-primary-500 px-5 py-1.5 text-small-regular !text-light-1 !important;
   }
 
-  /* thread card  */
   .issue-card_bar {
     @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
   }
