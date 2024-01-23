@@ -3,6 +3,7 @@
 import { connectToDB } from "../mongoose"
 import User from "../models/user.model"
 import { revalidatePath } from "next/cache";
+import Issue from "../models/issue.model";
 
 export async function fetchUser(userId: string) {
     try {
@@ -57,4 +58,30 @@ export async function updateUser(
     } catch (error:any) {
         throw new Error(`Error creating/updating user: ${error.message}`);
     } 
+}
+
+export async function fetchUserPosts(userId: string) {
+  try {
+    connectToDB();
+
+    const issues = await User.findOne({ id: userId }).populate({
+      path: "issues",
+      model: Issue,
+      populate: [
+        {
+          path: "children",
+          model: Issue,
+          populate: {
+            path: "author",
+            model: User,
+            select: "name image id", 
+          },
+        },
+      ],
+    });
+    return issues;
+  } catch (error) {
+    console.error("Error fetching user issues:", error);
+    throw error;
+  }
 }
