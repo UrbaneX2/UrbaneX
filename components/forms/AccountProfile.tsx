@@ -183,7 +183,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className='text-red-500' />
             </FormItem>
           )}
         />
