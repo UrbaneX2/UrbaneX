@@ -1,7 +1,7 @@
 import { classNames } from "uploadthing/client";
 import Link from "next/link";
 import Image from "next/image";
-
+import { formatDateString } from "@/lib/utils";
 
 interface Props {
     id: string;
@@ -107,6 +107,7 @@ const IssueCard = ({
             </div>
           </div>
         </div>
+        
         {!isComment && comments.length > 0 && (
                     <div className='ml-1 mt-3 flex items-center gap-2'>
                       {comments.slice(0, 2).map((comment, index) => (
@@ -127,6 +128,25 @@ const IssueCard = ({
                       </Link>
                     </div>
                   )}
+                   {!isComment && community && (
+        <Link
+          href={`/communities/${community.id}`}
+          className='mt-5 flex items-center'
+        >
+          <p className='text-subtle-medium text-gray-1'>
+            {formatDateString(createdAt)}
+            {community && ` - ${community.name} Community`}
+          </p>
+
+          <Image
+            src={community.image}
+            alt={community.name}
+            width={14}
+            height={14}
+            className='ml-1 rounded-full object-cover'
+          />
+        </Link>
+      )}
     </article>
    
  )
