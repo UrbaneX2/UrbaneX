@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import Issue from "../models/issue.model";
 import { FilterQuery } from "mongoose";
 import { SortOrder } from "mongoose";
+import Community from "../models/community.model";
 
 export async function fetchUser(userId: string) {
     try {
@@ -13,10 +14,10 @@ export async function fetchUser(userId: string) {
 
       return await User.findOne(
         { id: userId })
-    //     .populate({
-    //     path: "communities",
-    //     model:Community
-    //   });
+        .populate({
+        path: "communities",
+        model:Community
+      });
     } catch (error: any) {
       throw new Error(`Failed to fetch user: ${error.message}`);
     }
@@ -70,6 +71,11 @@ export async function fetchUserPosts(userId: string) {
       path: "issues",
       model: Issue,
       populate: [
+        {
+          path: "community",
+          model: Community,
+          select: "name id image _id",
+        },
         {
           path: "children",
           model: Issue,

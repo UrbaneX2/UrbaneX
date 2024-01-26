@@ -18,7 +18,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import  { updateUser }  from '@/lib/actions/user.actions';
 import { IssueValidation } from '@/lib/validations/issue';
 import { createIssue } from '@/lib/actions/issue.actions';
-
+import { useOrganization } from '@clerk/nextjs';
 
 interface Props {
     user:{
@@ -35,6 +35,7 @@ interface Props {
 function PostIssue({ userId }: {userId: string}) {
     const router = useRouter();
     const pathname = usePathname();
+    const { organization } = useOrganization();
 
     const form = useForm({
         resolver: zodResolver(IssueValidation),
@@ -44,12 +45,12 @@ function PostIssue({ userId }: {userId: string}) {
         }
     });
 
-    const onSubmit = async (values: z.infer<typeof IssueValidation>) => {
-       await createIssue(
+    const onSubmit = async (values: z.infer<typeof IssueValidation>) => { 
+      await createIssue(
         {
             text: values.issue,
             author: userId,
-            communityId: null,
+            communityId: organization ? organization.id : null,
             path: pathname,
         });
 

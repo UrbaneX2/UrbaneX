@@ -4,7 +4,7 @@ import { connectToDB } from '../mongoose';
 import Issue from '../models/issue.model';
 import User from '../models/user.model';
 import { revalidatePath } from 'next/cache';
-
+import Community from '../models/community.model';
 
 interface Params {
     text: string,
@@ -22,16 +22,28 @@ export async function createIssue({
     try {
         connectToDB();
 
+        const communityIdObject = await Community.findOne(
+          { id: communityId },
+          { _id: 1 }
+        );
+
     const createdIssue = await Issue.create({
         text,
         author,
-        community: null,
+        community: communityIdObject,
     });
 
     // Update user model
     await User.findByIdAndUpdate(author,{
         $push: {issues: createdIssue._id}
     });
+
+    if (communityIdObject) {
+      // Update Community model
+      await Community.findByIdAndUpdate(communityIdObject, {
+        $push: { issues: createdIssue._id },
+      });
+    }
 
     revalidatePath(path)
     } catch (error: any) {
@@ -55,6 +67,9 @@ export async function fetchPosts(pageNumber = 1, pageSize = 15) {
     .populate({
       path: "author",
       model: User,
+    }).populate({
+      path: "community",
+      model: Community,
     })
     .populate({
       path: "children", 
@@ -73,7 +88,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 15) {
 
       const isNext = totalPostsCount > skipAmount + posts.length;
 
-      return {  posts, isNext };
+      return { posts, isNext };
     }
 
 
@@ -86,6 +101,10 @@ export async function fetchIssueById(id: string) {
             path: "author",
             model: User,
             select: "_id id name image",
+    }).populate({
+      path: "community",
+      model: Community,
+      select: "_id id name image",
     }).populate({
         path: "children", 
         populate: [
@@ -143,4 +162,66 @@ export async function addCommentToIssue(
     } catch (error: any) {
         throw new Error(`Error adding comment to issue: ${error.message}`);
     }
+}
+
+async function fetchAllChildIssues(issueId: string): Promise<any[]> {
+  const childIssues = await Issue.find({ parentId: issueId });
+
+  const descendantIssues = [];
+  for (const childIssue of childIssues) {
+    const descendants = await fetchAllChildIssues(childIssue._id);
+    descendantIssues.push(childIssue, ...descendants);
+  }
+
+  return descendantIssues;
+}
+export async function deleteIssue(id: string, path: string): Promise<void> {
+  try {
+    connectToDB();
+
+    const mainIssue = await Issue.findById(id).populate("author community");
+
+    if (!mainIssue) {
+      throw new Error("Issue not found");
+    }
+
+    const descendantIssues = await fetchAllChildIssues(id);
+
+ 
+    const descendantIssueIds = [
+      id,
+      ...descendantIssues.map((issue) => issue._id),
+    ];
+
+
+    const uniqueAuthorIds = new Set(
+      [
+        ...descendantIssues.map((issue) => issue.author?._id?.toString()),
+        mainIssue.author?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
+
+    const uniqueCommunityIds = new Set(
+      [
+        ...descendantIssues.map((issue) => issue.community?._id?.toString()), 
+        mainIssue.community?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
+
+    await Issue.deleteMany({ _id: { $in: descendantIssueIds } });
+
+    await User.updateMany(
+      { _id: { $in: Array.from(uniqueAuthorIds) } },
+      { $pull: { issues: { $in: descendantIssueIds } } }
+    );
+
+    await Community.updateMany(
+      { _id: { $in: Array.from(uniqueCommunityIds) } },
+      { $pull: { issues: { $in: descendantIssueIds } } }
+    );
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to delete issue: ${error.message}`);
+  }
 }
