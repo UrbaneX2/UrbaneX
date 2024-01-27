@@ -38,6 +38,9 @@
 >    - The platform features a dedicated section for crowdfunding, allowing        users to raise donations for community projects directly within the         application.
 >   - Transparent tracking of donation amounts and project progress ensures       accountability and builds trust among contributors.
 
+![UrbaneXSD](https://github.com/abhisek-1221/UrbaneX/assets/110292494/d869e44e-5b5d-4b37-9f4f-b7f9ac417889)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
