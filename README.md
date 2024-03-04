@@ -1,5 +1,8 @@
 # UrbaneX - Community Issue Reporting Platform
 
+- [Site Link](https://urbane-x-site.vercel.app/)
+- [App Link](https://urbane-x.vercel.app/)
+
 ## Overview
 
 > UrbaneX is a robust community-driven platform designed to empower users to report and address issues within their locality. Facilitating seamless communication between the community and local authorities, UrbaneX not only ensures efficient issue resolution but also fosters community engagement and broader environmental initiatives.
@@ -143,7 +146,7 @@ AI Chatbot:
 ## Contributing
 Contributions to UrbaneX are welcomed! If you're interested in contributing, please review our Contribution Guidelines.
 
-License
+## License
 This project is licensed under the MIT License.
 
 
