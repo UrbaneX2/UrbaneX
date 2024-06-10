@@ -62,16 +62,38 @@ const IssueCard = ({
               {content}
             </p>
             {/* Render like, reply, repost, and share icons */}
-            <div className="mt-5 flex flex-col gap-3">
-              <Image
-                src="/assets/heart-gray.svg"
-                alt="like"
-                width={24}
-                height={24}
-                className="cursor-pointer object-contain"
-              />
-              {/* Add similar Image components for other icons */}
-            </div>
+            <div className='flex gap-3.5 mt-2'>
+                <Image
+                  src='/assets/heart-gray.svg'
+                  alt='like'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                />
+                <Link href={`/issue/${id}`}>
+                  <Image
+                    src='/assets/reply.svg'
+                    alt='reply'
+                    width={24}
+                    height={24}
+                    className='cursor-pointer object-contain'
+                  />
+                </Link>
+                <Image
+                  src='/assets/repost.svg'
+                  alt='repost'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                />
+                <Image
+                  src='/assets/share.svg'
+                  alt='share'
+                  width={24}
+                  height={24}
+                  className='cursor-pointer object-contain'
+                />
+              </div>
             {/* Render number of comments */}
             {isComment && comments.length > 0 && (
               <Link href={`/issue/${id}`}>
