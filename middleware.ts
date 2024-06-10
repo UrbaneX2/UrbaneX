@@ -3,7 +3,6 @@ import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
   publicRoutes: [
-    "/", // Homepage
     "/posts/:id", // Specific posts
     "/api/webhook/clerk", // Clerk webhook
     "/api/uploadthing", // Upload endpoint
