@@ -6,16 +6,13 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
   } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import * as z from "zod"
 import { useRouter, usePathname } from 'next/navigation';
-import  { updateUser }  from '@/lib/actions/user.actions';
 import { CommentValidation } from '@/lib/validations/issue';
 import Image from 'next/image';
 import { addCommentToIssue } from '@/lib/actions/issue.actions';
