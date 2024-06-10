@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: 'UrbaneX',
   description: 'Connect Collab & Catalyse Positive Change',
   icons: {
-    icon: '/assets/images/logo.jepg'
+    icon: '/assets/images/logo.jpeg'
   }
 };
 

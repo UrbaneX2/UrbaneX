@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
@@ -22,10 +22,9 @@ function UserCard({ id, name, username, imgUrl, personType }: Props) {
     <article className='user-card'>
       <div className='user-card_avatar'>
         <div className='relative h-12 w-12'>
-          <Image
+          <img
             src={imgUrl}
             alt='user_logo'
-            fill
             className='rounded-full object-cover'
           />
         </div>
