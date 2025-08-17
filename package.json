@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.2",
+    "@clerk/nextjs": "^6.31.1",
     "@clerk/themes": "^1.7.9",
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.9",

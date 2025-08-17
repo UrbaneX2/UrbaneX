@@ -21,13 +21,18 @@ const LeftSidebar = () => {
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === link.route;
 
-          if (link.route === "/profile") link.route = `${link.route}/${userId}`;
+          let href = link.route;
+          if (link.route === "/profile") {
+            href = `${link.route}/${userId}`;
+          }
 
           return (
             <Link
-              href={link.route}
+              href={href}
               key={link.label}
-              className={`leftsidebar_link ${isActive && "bg-gradient-to-r from-gray-400 via-gray-600 to-blue-900 "}`}
+              className={`leftsidebar_link ${
+                isActive && "bg-gradient-to-r from-gray-400 via-gray-600 to-blue-900 "
+              }`}
             >
               <Image
                 src={link.imgURL}

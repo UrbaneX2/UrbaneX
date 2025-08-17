@@ -1,5 +1,5 @@
 import IssueCard from "@/components/cards/IssueCard";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { fetchIssueById } from "@/lib/actions/issue.actions";

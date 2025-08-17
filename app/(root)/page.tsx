@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { UserButton } from '@clerk/nextjs'
 import { fetchPosts } from '@/lib/actions/issue.actions';
-import { currentUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 import IssueCard from '@/components/cards/IssueCard';
 import Comment from '@/components/forms/Comment';
 export default async function Home() {
