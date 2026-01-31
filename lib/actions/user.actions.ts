@@ -10,7 +10,7 @@ import Community from "../models/community.model";
 
 export async function fetchUser(userId: string) {
     try {
-      connectToDB();
+      await connectToDB();
 
       return await User.findOne(
         { id: userId })
@@ -41,7 +41,7 @@ export async function updateUser(
     image,
     path,
    }: Params): Promise<void> {
-   connectToDB();
+   await connectToDB();
 
     try {
         await User.findOneAndUpdate(
@@ -65,7 +65,7 @@ export async function updateUser(
 
 export async function fetchUserPosts(userId: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const issues = await User.findOne({ id: userId }).populate({
       path: "issues",
@@ -108,7 +108,7 @@ export async function fetchUsers({
   sortBy?: SortOrder;
 }) {
   try {
-    connectToDB();
+    await connectToDB();
 
     // Calculate the number of users to skip based on the page number and page size.
     const skipAmount = (pageNumber - 1) * pageSize;
@@ -154,7 +154,7 @@ export async function fetchUsers({
 
 export async function getActivity(userId: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const userIssues = await Issue.find({ author: userId });
 

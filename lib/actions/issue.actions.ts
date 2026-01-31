@@ -15,7 +15,7 @@ interface Params {
 
 export async function createIssue({ text, author, communityId, path }: Params) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const communityIdObject = await Community.findOne(
       { id: communityId },
@@ -47,7 +47,7 @@ export async function createIssue({ text, author, communityId, path }: Params) {
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 15) {
-  connectToDB();
+  await connectToDB();
 
   const skipAmount = (pageNumber - 1) * pageSize;
 
@@ -86,7 +86,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 15) {
 }
 
 export async function fetchIssueById(id: string) {
-  connectToDB();
+  await connectToDB();
 
   try {
     const issue = await Issue.findById(id)
@@ -133,7 +133,7 @@ export async function addCommentToIssue(
   userId: string,
   path: string,
 ) {
-  connectToDB();
+  await connectToDB();
 
   try {
     const originalIssue = await Issue.findById(issueId);
@@ -170,7 +170,7 @@ async function fetchAllChildIssues(issueId: string): Promise<any[]> {
 }
 export async function deleteIssue(id: string, path: string): Promise<void> {
   try {
-    connectToDB();
+    await connectToDB();
 
     const mainIssue = await Issue.findById(id).populate("author community");
 

@@ -18,7 +18,7 @@ export async function createCommunity(
   createdById: string 
 ) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const user = await User.findOne({ id: createdById });
 
@@ -49,7 +49,7 @@ export async function createCommunity(
 
 export async function fetchCommunityDetails(id: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const communityDetails = await Community.findOne({ id }).populate([
       "createdBy",
@@ -69,7 +69,7 @@ export async function fetchCommunityDetails(id: string) {
 
 export async function fetchCommunityPosts(id: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const communityPosts = await Community.findById(id).populate({
       path: "issues",
@@ -111,7 +111,7 @@ export async function fetchCommunities({
   sortBy?: SortOrder;
 }) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const skipAmount = (pageNumber - 1) * pageSize;
 
@@ -152,7 +152,7 @@ export async function addMemberToCommunity(
   memberId: string
 ) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const community = await Community.findOne({ id: communityId });
 
@@ -188,7 +188,7 @@ export async function removeUserFromCommunity(
   communityId: string
 ) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const userIdObject = await User.findOne({ id: userId }, { _id: 1 });
     const communityIdObject = await Community.findOne(
@@ -230,7 +230,7 @@ export async function updateCommunityInfo(
   image: string
 ) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const updatedCommunity = await Community.findOneAndUpdate(
       { id: communityId },
@@ -250,7 +250,7 @@ export async function updateCommunityInfo(
 
 export async function deleteCommunity(communityId: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     const deletedCommunity = await Community.findOneAndDelete({
       id: communityId,
